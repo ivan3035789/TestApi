@@ -1,0 +1,15 @@
+изображение: Ubuntu
+
+стек: jdk 11
+
+ветви:
+  только:
+    - мастер
+
+сборка: выкл
+
+установка:
+  - java -jar ./artifacts/app-order.jar &
+  - chmod +x gradlew
+build_script:
+  - ./gradlew test-info
