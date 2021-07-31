@@ -1,27 +1,34 @@
 package ru.netology.web;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 public class MobileBankApiTest {
     private WebDriver driver;
 
     @BeforeAll
-    static void setUpAll() {
-        System.setProperty("webdriver.chrome.driver", "./driver/chromedriver.exe");
+     static void setupBrowserDriver() {
+        WebDriverManager.chromedriver().setup();
     }
 
     @BeforeEach
-    void setUp() {
-        driver = new ChromeDriver();
+    public void setupDriver() {
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--headless");
+        driver = new ChromeDriver(options);
     }
 
     @AfterEach
-    void teamDown() {
-        driver.quit();
-        driver = null;
+    public void teardown() {
+        if (driver != null) {
+            driver.quit();
+        }
     }
 
     @Test
@@ -35,7 +42,7 @@ public class MobileBankApiTest {
         String expectedText = "  Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.";
         String actualText = driver.findElement(By.tagName("p")).getText();
         Assertions.assertEquals(expectedText, actualText);
-//        Assertions.assertEquals(expectedText, actualText);
+
 
     }
 }
